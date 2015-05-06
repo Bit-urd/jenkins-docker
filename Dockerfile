@@ -45,6 +45,10 @@ EXPOSE 50000
 ENV COPY_REFERENCE_FILE_LOG /var/log/copy_reference_file.log
 RUN touch $COPY_REFERENCE_FILE_LOG && chown jenkins.jenkins $COPY_REFERENCE_FILE_LOG
 
+# marker file used as a flag to ensure we copy reference files once only
+ENV COPY_REFERENCE_MARKER ${JENKINS_HOME}/.docker-onrun-complete
+RUN touch $COPY_REFERENCE_MARKER && chown jenkins.jenkins $COPY_REFERENCE_MARKER
+
 USER jenkins
 
 COPY jenkins.sh /usr/local/bin/jenkins.sh
