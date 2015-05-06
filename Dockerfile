@@ -29,6 +29,10 @@ ENV JENKINS_SHA 96ee85602a41d68c164fb54d4796be5d1d9cc5d0
 RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
   && echo "$JENKINS_SHA /usr/share/jenkins/jenkins.war" | sha1sum -c -
 
+# extract plugins from the war file to the ref directory so they can be overridden
+RUN unzip -j -d /usr/share/jenkins/ref/plugins -n /usr/share/jenkins/jenkins.war WEB-INF/plugins/* \
+    && zip  -d /usr/share/jenkins/jenkins.war WEB-INF/plugins/*
+    
 ENV JENKINS_UC https://updates.jenkins-ci.org
 RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/ref
 
@@ -48,3 +52,4 @@ ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
 
 # from a derived Dockerfile, can use `RUN plugin.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
 COPY plugins.sh /usr/local/bin/plugins.sh
+
