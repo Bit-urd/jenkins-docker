@@ -17,5 +17,10 @@ while read spec; do
     [[ ${plugin[0]} =~ ^\s*$ ]] && continue
     [[ -z ${plugin[1]} ]] && plugin[1]="latest"
     echo "Downloading ${plugin[0]}:${plugin[1]}"
-    curl -s -L -f ${JENKINS_UC}/download/plugins/${plugin[0]}/${plugin[1]}/${plugin[0]}.hpi -o $REF/${plugin[0]}.hpi || echo "Failed to download ${plugin[0]}:${plugin[1]}"
+    if [[ "${plugin[1]}" = "latest" ]]; then
+      curl -s -L -f ${JENKINS_UC}/${plugin[1]}/${plugin[0]}.hpi -o $REF/${plugin[0]}.hpi || echo "Failed to download ${plugin[0]}:${plugin[1]}"
+    else
+      curl -s -L -f ${JENKINS_UC}/download/plugins/${plugin[0]}/${plugin[1]}/${plugin[0]}.hpi -o $REF/${plugin[0]}.hpi || echo "Failed to download ${plugin[0]}:${plugin[1]}"
+    fi
+    unzip -p $REF/${plugin[0]}.hpi META-INF/MANIFEST.MF    
 done  < $1
