@@ -1,8 +1,4 @@
 FROM java:8u45-jdk
-# bodgy/temporary proxy workaround
-ENV http_proxy=http://pc-62933.prod.lan:3128 HTTPS_PROXY=http://pc-62933.prod.lan:3128
-#ENV http_proxy=http://proxy.ga.gov.au:8080  HTTPS_PROXY=http://proxy.ga.gov.au:8080
-#ENV http_proxy=http://LT-64847.prod.lan:3128 HTTPS_PROXY=http://LT-64847.prod.lan:3128
 
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
