@@ -1,4 +1,6 @@
 FROM java:8u45-jdk
+# proxy via corporate docker repo
+ENV http_proxy=http://rhe-repo-prod01.prod.lan:8081 HTTPS_PROXY=http://rhe-repo-prod01.prod.lan:8081 
 
 RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
 
@@ -55,5 +57,4 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 ENTRYPOINT ["/usr/local/bin/jenkins.sh"]
 
 # from a derived Dockerfile, can use `RUN plugin.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
-COPY plugins.sh /usr/local/bin/plugins.sh
-
+COPY plugins.sh /usr/local/bin/plugins.sh 
