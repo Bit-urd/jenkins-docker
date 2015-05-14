@@ -7,21 +7,21 @@
 
 if [ ! -e $COPY_REFERENCE_MARKER ]; then
    copy_reference_file() {
-       f=${1%/} 
+       f="${1%/}" 
        echo "$f" >> $COPY_REFERENCE_FILE_LOG
-       rel=${f:23}
-       dir=$(dirname ${f})
+       rel="${f:23}"
+       dir=$(dirname "${f}")
        echo " $f -> $rel" >> $COPY_REFERENCE_FILE_LOG
        echo "copy $rel to JENKINS_HOME" >> $COPY_REFERENCE_FILE_LOG
-       if [[ ! -e ${JENKINS_HOME}/${rel} ]] 
+       if [[ ! -e "${JENKINS_HOME}/${rel}" ]] 
        then
-           mkdir -p ${JENKINS_HOME}/${dir:23}
+           mkdir -p "${JENKINS_HOME}/${dir:23}"
        fi; 
-       cp -r /usr/share/jenkins/ref/${rel} ${JENKINS_HOME}/${rel}; 
+       cp -r "/usr/share/jenkins/ref/${rel}" "${JENKINS_HOME}/${rel}"; 
    }
    export -f copy_reference_file
    echo "--- Copying files at $(date)" >> $COPY_REFERENCE_FILE_LOG
-   find /usr/share/jenkins/ref/ -type f -exec bash -c 'copy_reference_file {}' \;
+   find /usr/share/jenkins/ref/ -type f -exec bash -c 'copy_reference_file "{}"' \;
    echo "docker onrun processing complete at $(date)" > $COPY_REFERENCE_MARKER 
 fi
 
